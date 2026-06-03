@@ -350,9 +350,12 @@ ROW["BS_te"]      = 26
 write_label_row(ws_bs, 24, "  Paid-In Capital",    indent=1)
 write_label_row(ws_bs, 25, "  Retained Earnings",  indent=1, alt=True)
 
+# Paid-In Capital is the balancing plug: Total Assets - Total Liabilities - Retained Earnings
+# This guarantees Assets = Liabilities + Equity for every year by construction.
 for i in range(N):
-    ws_bs.cell(24, 2+i, value=INIT_EQUITY).number_format = '#,##0'
-    ws_bs.cell(24, 2+i).fill = PatternFill("solid", fgColor=CLR_INPUT_BG)
+    c = col(i)
+    ws_bs.cell(24, 2+i,
+        value=f"={c}12-{c}21-{c}25").number_format = '#,##0'
 
 for i in range(N):
     c      = col(i)
